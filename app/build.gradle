@@ -42,4 +42,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.4.0@aar') {
         transitive = true;
     }
+	compile 'org.kulabukhov:android-commons:0.1.8'
 }
