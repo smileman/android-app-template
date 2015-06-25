@@ -1,0 +1,9 @@
+.gradle
+*/local.properties
+*.idea/
+.DS_Store
+*build/
+*/captures
+*local.properties
+*.iml
+app/src/main/assets/crashlytics-build.properties
