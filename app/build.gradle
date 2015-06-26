@@ -19,6 +19,11 @@ android {
 	compileSdkVersion 22
 	buildToolsVersion "22.0.1"
 
+	packagingOptions {
+		exclude 'META-INF/LICENSE'
+		exclude 'META-INF/NOTICE'
+	}
+
 	defaultConfig {
 		applicationId "org.kulabukhov.android.apptemplate"
 		minSdkVersion 10
@@ -43,5 +48,9 @@ dependencies {
         transitive = true;
     }
 	compile 'org.kulabukhov:android-commons:0.1.8'
+	compile 'com.loopj.android:android-async-http:1.4.6'
+	compile 'com.fasterxml.jackson.core:jackson-core:2.4.0'
+	compile 'com.fasterxml.jackson.core:jackson-annotations:2.4.0'
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.4.0'
 	compile 'com.jakewharton.timber:timber:2.5.1'
 }
