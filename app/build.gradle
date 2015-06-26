@@ -43,4 +43,5 @@ dependencies {
         transitive = true;
     }
 	compile 'org.kulabukhov:android-commons:0.1.8'
+	compile 'com.jakewharton.timber:timber:2.5.1'
 }
