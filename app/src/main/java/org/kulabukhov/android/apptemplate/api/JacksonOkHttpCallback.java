@@ -3,23 +3,24 @@ package org.kulabukhov.android.apptemplate.api;
 import com.crashlytics.android.Crashlytics;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.loopj.android.http.BaseJsonHttpResponseHandler;
+import com.squareup.okhttp.*;
+import com.squareup.okhttp.Request;
 
 import org.jetbrains.annotations.Nullable;
 import org.kulabukhov.android.apptemplate.BuildConfig;
 
 import java.io.IOException;
+import java.io.Reader;
 
 import timber.log.Timber;
 
 /**
-* Created by gkulabukhov on 17/12/14.
-*/
-abstract class JacksonHttpResponseHandler extends BaseJsonHttpResponseHandler<JsonNode> {
+ * Created by gkulabukhov on 26/06/15.
+ */
+public abstract class JacksonOkHttpCallback implements Callback {
 
 	@Nullable
-	@Override
-	protected JsonNode parseResponse(String rawJsonData, boolean isFailure) throws Throwable {
+	protected JsonNode parseResponse(Reader rawJsonData) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			JsonNode jsonNode = mapper.readTree(rawJsonData);
@@ -34,4 +35,11 @@ abstract class JacksonHttpResponseHandler extends BaseJsonHttpResponseHandler<Js
 
 		return null;
 	}
+
+	@Override
+	public void onResponse(Response response) throws IOException {
+		onResponse(response, parseResponse(response.body().charStream()));
+	}
+
+	public abstract void onResponse(Response response, JsonNode jsonResult) throws IOException;
 }

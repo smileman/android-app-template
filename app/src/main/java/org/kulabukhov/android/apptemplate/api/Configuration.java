@@ -5,7 +5,7 @@ package org.kulabukhov.android.apptemplate.api;
  */
 public class Configuration {
 
-	//TODO add different constants related to network, etc.
+	//TODO add different constants related to network and etc.
 
 	public static final String SERVER_API_URL = "";
 
