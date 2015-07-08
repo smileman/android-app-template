@@ -36,4 +36,13 @@ public class BaseFragment extends Fragment {
 		SoftKeyboardHelper.showSoftKeyboard(getActivity(), view);
 	}
 
+	/**
+	 * Fragment title to be shown in app bar. Override this method in subclasses.
+	 *
+	 * @return fragment title
+	 */
+	@Nullable
+	public String fragmentTitle() {
+		return null;
+	}
 }
