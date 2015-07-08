@@ -1,8 +1,33 @@
 <resources>
 
 	<!-- Base application theme. -->
-	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 		<!-- Customize your theme here. -->
+
+		<!-- colorPrimary is used for the default action bar background -->
+		<item name="colorPrimary">@color/color_primary</item>
+
+		<!-- colorPrimaryDark is used for the status bar -->
+		<item name="colorPrimaryDark">@color/color_primary_dark</item>
+
+		<!-- colorAccent is used as the default value for colorControlActivated, which is used to tint widgets -->
+		<item name="colorAccent">@color/color_accent</item>
+
+		<item name="colorControlNormal">@android:color/white</item>
+		<item name="android:textColorPrimary">@android:color/darker_gray</item>
+		<item name="android:windowBackground">@color/window_background</item>
+
+	</style>
+
+	<style name="Widget.App.ActionBar" parent="Widget.AppCompat.ActionBar">
+		<item name="android:background">@color/color_primary</item>
+		<item name="theme">@style/ThemeOverlay.App.ActionBar</item>
+		<item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+	</style>
+
+	<style name="ThemeOverlay.App.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+		<item name="android:textColorPrimary">@android:color/white</item>
+		<item name="colorControlNormal">@android:color/white</item>
 	</style>
 
 </resources>
