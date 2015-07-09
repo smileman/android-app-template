@@ -27,23 +27,26 @@
 
     <rule ref="rulesets/java/android.xml">
         <!-- Config.LOGD deprecated in API level 4 !-->
-        <exclude name="ProtectLogD" />
+        <!-- <exclude name="ProtectLogD" /> !-->
         <!-- Config.LOGV deprecated in API level 4 !-->
-        <exclude name="ProtectLogV" />
+        <!-- <exclude name="ProtectLogV" /> !-->
     </rule>
     <rule ref="rulesets/java/clone.xml" />
     <rule ref="rulesets/java/finalizers.xml" />
     <rule ref="rulesets/java/imports.xml">
         <exclude name="TooManyStaticImports" />
     </rule>
-    <rule ref="rulesets/java/logging-java.xml" />
+    <rule ref="rulesets/java/logging-java.xml">
+        <exclude name="AvoidPrintStackTrace" />
+    </rule>
     <rule ref="rulesets/java/braces.xml" />
     <rule ref="rulesets/java/strings.xml" />
     <rule ref="rulesets/java/basic.xml" />
     <rule ref="rulesets/java/naming.xml">
         <exclude name="AbstractNaming" />
         <exclude name="LongVariable" />
-        <exclude name="LongMethodName" />
+        <!-- <exclude name="LongMethodName" /> !-->
+        <exclude name="ShortClassName" />
         <exclude name="ShortMethodName" />
         <exclude name="ShortVariable" />
         <exclude name="VariableNamingConventions" />
