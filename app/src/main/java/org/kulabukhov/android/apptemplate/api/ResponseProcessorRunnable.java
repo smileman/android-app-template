@@ -11,7 +11,8 @@ public class ResponseProcessorRunnable implements Runnable {
 	private final JsonNode unhandledResponse;
 	private final JsonNode rawResponse;
 
-	public ResponseProcessorRunnable(AsyncResultHandler resultHandler, JsonNode unhandledResponse, JsonNode rawResponse) {
+	public ResponseProcessorRunnable(AsyncResultHandler resultHandler, JsonNode unhandledResponse,
+									 JsonNode rawResponse) {
 		this.resultHandler = resultHandler;
 		this.unhandledResponse = unhandledResponse;
 		this.rawResponse = rawResponse;

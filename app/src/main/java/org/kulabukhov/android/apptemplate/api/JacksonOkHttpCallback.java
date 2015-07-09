@@ -3,8 +3,8 @@ package org.kulabukhov.android.apptemplate.api;
 import com.crashlytics.android.Crashlytics;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.okhttp.*;
-import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Response;
 
 import org.jetbrains.annotations.Nullable;
 import org.kulabukhov.android.apptemplate.BuildConfig;

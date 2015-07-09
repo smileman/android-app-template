@@ -10,10 +10,13 @@ import org.kulabukhov.android.apptemplate.R;
 import org.kulabukhov.android.apptemplate.fragments.BaseFragment;
 import org.kulabukhov.android.apptemplate.fragments.StubFragment;
 
+/**
+ * Application main activity
+ */
 public class MainActivity extends BaseActivity {
 
 
-	public BaseFragment currentContentFragment;
+	private BaseFragment currentContentFragment;
 
 	//region ==================== Lifecycle callbacks ====================
 
@@ -72,12 +75,13 @@ public class MainActivity extends BaseActivity {
 
 	//region ==================== UI handlers and callbacks ====================
 
-	private FragmentManager.OnBackStackChangedListener onBackStackListener = new FragmentManager.OnBackStackChangedListener() {
-		@Override
-		public void onBackStackChanged() {
-			updateActionBarTitle();
-		}
-	};
+	private FragmentManager.OnBackStackChangedListener onBackStackListener =
+			new FragmentManager.OnBackStackChangedListener() {
+				@Override
+				public void onBackStackChanged() {
+					updateActionBarTitle();
+				}
+			};
 
 	//endregion
 
