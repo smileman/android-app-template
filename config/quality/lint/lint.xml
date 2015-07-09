@@ -16,6 +16,10 @@
   -->
 
 <lint>
+
+    <issue id="InvalidPackage" severity="ignore" />
+
+    <!--
     <issue id="AdapterViewChildren" severity="ignore" />
     <issue id="AllowBackup" severity="ignore" />
     <issue id="AlwaysShowAction" severity="ignore" />
@@ -72,7 +76,6 @@
     <issue id="InnerclassSeparator" severity="ignore" />
     <issue id="Instantiatable" severity="ignore" />
     <issue id="InvalidId" severity="ignore" />
-    <issue id="InvalidPackage" severity="ignore" />
     <issue id="JavascriptInterface" severity="ignore" />
     <issue id="LabelFor" severity="ignore" />
     <issue id="LibraryCustomView" severity="ignore" />
@@ -166,5 +169,5 @@
     <issue id="WrongCase" severity="ignore" />
     <issue id="WrongFolder" severity="ignore" />
     <issue id="WrongManifestParent" severity="ignore" />
-    <issue id="WrongViewCast" severity="ignore" />
+    <issue id="WrongViewCast" severity="ignore" /> -->
 </lint>

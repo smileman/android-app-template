@@ -1,10 +1,10 @@
 <resources>
 	<string name="app_name">AppTemplate</string>
 
-	<string name="hello_world">Hello world!</string>
-
 	<string name="error_message_network_unavailable_check_internet_connection">Отсутствует подключение к сети Интернет</string>
 	<string name="error_message_network_unavailable_try_again_later">Сервер недоступен. Попробуйте повторить попытку позже.</string>
 	<string name="error_message_internal_error_occurred_try_again_later">Произошла внутренняя ошибка. Попробуйте повторить попытку позже.</string>
+
+	<string name="stub_fragment_functional_not_implemented">Этот функционал еще не реализован</string>
 
 </resources>
