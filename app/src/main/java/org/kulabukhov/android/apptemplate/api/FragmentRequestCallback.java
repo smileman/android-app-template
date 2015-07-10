@@ -8,6 +8,9 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by gkulabukhov on 22/12/14.
+ *
+ * @param <T> type of data that returned with this {@link RequestCallback}
+ * @param <K> type of callback callback referent. Must be subclass of {@link Fragment}
  */
 public abstract class FragmentRequestCallback<T, K extends Fragment> extends ReferenceRequestCallback<T, K> {
 

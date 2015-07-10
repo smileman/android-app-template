@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by gkulabukhov on 16/12/14.
  */
-public class BackgroundResponseProcessor {
+public final class BackgroundResponseProcessor {
 
 	// Sets the amount of time an idle thread will wait for a task before terminating
 	private static final int KEEP_ALIVE_TIME = 1;
@@ -32,7 +32,7 @@ public class BackgroundResponseProcessor {
 	 * than the total number of cores. The total number of cores is not
 	 * available in current Android implementations.
 	 */
-	private static int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
+	private static final int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
 
 	@NotNull
 	private final BlockingQueue<Runnable> processorWorkQueue;

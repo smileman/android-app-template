@@ -2,7 +2,6 @@ package org.kulabukhov.android.apptemplate.api;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.MediaType;
@@ -26,7 +25,7 @@ import timber.log.Timber;
 /**
  * Created by gkulabukhov on 15/12/14.
  */
-public class API {
+public final class API {
 
 	private static final int CONNECTION_TIMEOUT = 30;
 	private static final String CONTENT_TYPE_JSON = "application/json";
@@ -94,7 +93,8 @@ public class API {
 			Object json = objectMapper.readValue(stringBody, Object.class);
 
 			if (BuildConfig.DEBUG) {
-				Timber.w("Request body: %s", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json));
+				Timber.w("Request body: %s",
+						objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json));
 			}
 
 			if (stringBody != null) {
@@ -125,7 +125,8 @@ public class API {
 		return url;
 	}
 
-	private <T> void sendRequest(@NotNull String method, @NotNull ApiRequest<T> apiRequest, @NotNull ResultHandler<T> resultHandler,
+	private <T> void sendRequest(@NotNull String method, @NotNull ApiRequest<T> apiRequest,
+								 @NotNull ResultHandler<T> resultHandler,
 								 RequestCallback<T> callback) {
 		apiRequest.setResultHandler(resultHandler);
 		apiRequest.setCallback(callback);

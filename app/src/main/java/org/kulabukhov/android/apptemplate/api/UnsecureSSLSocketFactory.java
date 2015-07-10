@@ -5,7 +5,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
@@ -17,8 +16,11 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+/**
+ * Unsecure UnsecureSSLSocketFactory to allow usage of self-sighed certs
+ */
 public class UnsecureSSLSocketFactory extends SSLSocketFactory {
-	SSLContext sslContext = SSLContext.getInstance("TLS");
+	private SSLContext sslContext = SSLContext.getInstance("TLS");
 
     public UnsecureSSLSocketFactory() throws NoSuchAlgorithmException, KeyManagementException,
             KeyStoreException, UnrecoverableKeyException {
@@ -35,7 +37,7 @@ public class UnsecureSSLSocketFactory extends SSLSocketFactory {
             }
         };
 
-        sslContext.init(null, new TrustManager[] { tm }, null);
+        sslContext.init(null, new TrustManager[] {tm}, null);
     }
 
     @Override

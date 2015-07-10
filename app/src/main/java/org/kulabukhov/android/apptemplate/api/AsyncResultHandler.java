@@ -6,6 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by gkulabukhov on 16/12/14.
+ *
+ * @param <T> type of data that handled with this {@link ResultHandler}
  */
 public abstract class AsyncResultHandler<T> extends ResultHandler<T> {
 

@@ -7,6 +7,9 @@ public class Configuration {
 
 	//TODO add different constants related to network and etc.
 
+	/**
+	 * Server API URL
+	 */
 	public static final String SERVER_API_URL = "";
 
 }

@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 /**
  * Created by gkulabukhov on 15/12/14.
+ *
+ * @param <T> type of data that requested with this {@link ApiRequest}
  */
 public class ApiRequest<T> {
 

@@ -8,6 +8,9 @@ import java.lang.ref.WeakReference;
 
 /**
  * Created by gkulabukhov on 22/12/14.
+ *
+ * @param <T> type of data that returned with this {@link RequestCallback}
+ * @param <K> type of callback callback referent
  */
 public abstract class ReferenceRequestCallback<T, K> extends RequestCallback<T> {
 
