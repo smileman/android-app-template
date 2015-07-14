@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.kulabukhov.android.apptemplate.R;
 import org.kulabukhov.android.apptemplate.fragments.BaseFragment;
 import org.kulabukhov.android.apptemplate.fragments.StubFragment;
+import org.kulabukhov.android.apptemplate.fragments.TestFragment;
 
 /**
  * Application main activity
@@ -32,7 +33,7 @@ public class MainActivity extends BaseActivity {
 		getSupportActionBar().setHomeButtonEnabled(true);
 
 		if (savedInstanceState == null) {
-			showContentFragment(new StubFragment(), false, true);
+			showContentFragment(new TestFragment(), false, true);
 		}
 		updateActionBarTitle();
 

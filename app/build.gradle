@@ -9,6 +9,7 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'jacoco'
 apply from: '../config/quality.gradle'
 
 repositories {
@@ -21,6 +22,10 @@ android {
 	buildToolsVersion "22.0.1"
 
 	packagingOptions {
+		exclude 'LICENSE.txt'
+		exclude 'META-INF/LICENSE.txt'
+		exclude 'META-INF/NOTICE.txt'
+		exclude 'META-INF/ASL2.0'
 		exclude 'META-INF/LICENSE'
 		exclude 'META-INF/NOTICE'
 	}
@@ -31,27 +36,75 @@ android {
 		targetSdkVersion 22
 		versionCode 1
 		versionName "1.0"
+
+		testInstrumentationRunner "org.kulabukhov.android.espressotestcoverage.AndroidJacocoTestRunner"
 	}
+
+	lintOptions {
+		abortOnError false
+	}
+
+	jacoco {
+		//bug in code coverage with espresso 2.1:
+		//https://code.google.com/p/android/issues/detail?id=170607
+		// http://search.maven.org/remotecontent?filepath=org/jacoco/jacoco/0.7.5.201505241946/jacoco-0.7.5.201505241946.zip
+		version "0.7.5.201505241946"
+	}
+
 	buildTypes {
 		release {
 			minifyEnabled false
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
+		debug {
+			testCoverageEnabled = true
+		}
 	}
-	
+
+	/*sourceSets {
+		androidTest {
+// include library sources into tests
+			java.srcDirs android.sourceSets.main.java.srcDirs
+		}
+
+		debug.setRoot('build-types/debug')
+		release.setRoot('build-types/release')
+	}
+	*/
 }
 
 dependencies {
-	compile fileTree(dir: 'libs', include: ['*.jar'])
+	compile fileTree(include: ['*.jar'], dir: 'libs')
 	compile 'com.android.support:appcompat-v7:22.2.0'
 	compile 'org.jetbrains:annotations:13.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.4.0@aar') {
-        transitive = true;
-    }
+	compile('com.crashlytics.sdk.android:crashlytics:2.4.0@aar') {
+		transitive = true;
+	}
 	compile 'org.kulabukhov:android-commons:0.1.8'
 	compile 'com.fasterxml.jackson.core:jackson-core:2.4.0'
 	compile 'com.fasterxml.jackson.core:jackson-annotations:2.4.0'
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.4.0'
 	compile 'com.jakewharton.timber:timber:2.5.1'
 	compile 'com.squareup.okhttp:okhttp:2.4.0'
+
+	// Testing-only dependencies
+	androidTestCompile 'com.android.support.test:runner:0.3'
+	//androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
+	androidTestCompile 'com.android.support.test:rules:0.3'
+	androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
+	androidTestCompile 'com.android.support:appcompat-v7:22.2.0'
+
 }
+
+/*jacoco {
+	toolVersion = "0.7.0.201403182114"
+}*/
+
+apply from: '../config/jacoco-support.gradle'
+
+
+
+
+
+
+

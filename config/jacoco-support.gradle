@@ -1,0 +1,142 @@
+// see https://github.com/OleksandrKucherenko/EspressoTestCoverageApp for details
+
+jacoco {
+	// http://search.maven.org/remotecontent?filepath=org/jacoco/jacoco/0.7.5.201505241946/jacoco-0.7.5.201505241946.zip
+	toolVersion "0.7.5.201505241946"
+}
+
+afterEvaluate { iterateVariants(this.&fixJacocoAndroidTest) }
+
+def iterateVariants(func) {
+	if (project.android.productFlavors.size() > 0) {
+		project.android.productFlavors.each { f ->
+			iterateBuildTypes(f.name, func)
+		}
+	} else {
+		iterateBuildTypes('', func)
+	}
+}
+
+def iterateBuildTypes(String flavor, func) {
+	project.android.buildTypes.each { b ->
+		func(flavor, b.name);
+	}
+}
+
+def adoptToOs(String path) {
+	// remove doubled dir separators
+	path = path.replace("//", "/")
+	path = path.replace("\\\\", "\\")
+
+	if (org.apache.tools.ant.taskdefs.condition.Os.isFamily(
+			org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS)) { // windows
+		path = path.replace("/", "\\")
+	} else if (org.apache.tools.ant.taskdefs.condition.Os.isFamily(
+			org.apache.tools.ant.taskdefs.condition.Os.FAMILY_UNIX)) { // linux
+		path = path.replace("\\", "/")
+	} else if (org.apache.tools.ant.taskdefs.condition.Os.isFamily(
+			org.apache.tools.ant.taskdefs.condition.Os.FAMILY_MAC)) { // mac os
+		path = path.replace("\\", "/")
+	}
+
+	return path;
+}
+
+def fixJacocoAndroidTest(String f, String b) {
+	def flavor = f.capitalize()
+	def buildType = b.capitalize()
+
+	if ("Release" == buildType) return; // exclude releases
+
+	def after1 = "preDex${flavor}${buildType}AndroidTest"
+	def before = "dex${flavor}${buildType}AndroidTest"
+
+	def agentName = "fixJacocoAgentAndroidTest${flavor}${buildType}"
+	project.task(agentName, type: Copy, dependsOn: [after1]) {
+		group = 'Workaround'
+		description = "Fix Jacoco Agent instrumentation for ${before}."
+
+		def src = adoptToOs("${project.buildDir}/intermediates/pre-dexed/${flavor}/${buildType}")
+		def dst = adoptToOs("${project.buildDir}/intermediates/pre-dexed/androidTest/${flavor}/${buildType}")
+
+		project.logger.info("  -- Source: ${src}")
+		project.logger.info("  -- Destination: ${dst}")
+
+		// jacocoagent-e6c058ec32129ab32585af898a646b6a20305f0a.jar
+		from(src) { include '**/jacocoagent-*.jar' }
+		into dst
+	}
+
+	tasks.getByName(before).dependsOn agentName
+
+	def after = "instrument${flavor}${buildType}"
+	def taskName = "fixJacocoAndroidTest${flavor}${buildType}"
+	project.task(taskName, type: Copy, dependsOn: [after]) {
+		group = 'Workaround'
+		description = "Fix Jacoco offline instrumentation for instrument${flavor}${buildType}."
+
+		def src = adoptToOs("${project.buildDir}/intermediates/coverage-instrumented-classes/${flavor}/${buildType}")
+		def dst = adoptToOs("${project.buildDir}/intermediates/classes/androidTest/${flavor}/${buildType}")
+
+		project.logger.info("  -- Source: ${src}")
+		project.logger.info("  -- Destination: ${dst}")
+
+		from src
+		into dst
+	}
+
+	tasks.getByName(before).dependsOn taskName
+
+}
+
+task pullCoverageResults(type: Exec) {
+	group = 'Reporting'
+	description = 'Extract coverage results from device to PC.'
+
+	outputs.upToDateWhen { /* RUN ALWAYS! */ return false; }
+
+	//def sdk = android.getSdkDirectory().toString()
+	def adb = android.getAdbExe().toString()
+	def dst = adoptToOs("${project.buildDir}/outputs/code-coverage")
+
+	// extract report file path
+	Properties props = new Properties()
+	props.load(new FileInputStream("${project.projectDir}/src/androidTest/resources/jacoco-agent.properties"))
+	String coverage = props.getProperty('destfile')
+
+	// log information for debug purposes
+	project.logger.info("  -- Coverage file: $coverage")
+	project.logger.info("  -- Destination: $dst")
+	project.logger.info("  -- ADB: $adb")
+
+	// create output folder if it does not exists
+	File fDstDir = new File("$dst")
+	if (!fDstDir.exists()) fDstDir.mkdirs()
+
+	// execute extraction
+	commandLine "$adb", 'pull', "$coverage", dst
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ["pullCoverageResults"]) {
+	description = "Generates Jacoco coverage reports: XML and HTML"
+	group = "Reporting"
+
+	jacocoClasspath = project.configurations['androidJacocoAnt']
+
+	// exclude auto-generated classes and tests
+	def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*',
+					  'android/**/*.*']
+	def testsTree = fileTree(dir: "${project.buildDir}/intermediates/classes/androidTest/debug", excludes: fileFilter)
+	def debugTree = fileTree(dir: "${project.buildDir}/intermediates/classes/debug", excludes: fileFilter)
+	def releaseTree = fileTree(dir: "${project.buildDir}/intermediates/classes/release", excludes: fileFilter)
+
+	def testsSrc = "${project.projectDir}/src/test/java"
+	def mainSrc = "${project.projectDir}/src/main/java"
+
+	sourceDirectories = files([testsSrc, mainSrc])
+	classDirectories = files([testsTree, debugTree, releaseTree])
+
+	executionData = fileTree(dir: project.projectDir, includes: ['**/*.exec', '**/*.ec'])
+}
+
+
