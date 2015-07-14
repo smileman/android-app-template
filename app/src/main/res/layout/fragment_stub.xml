@@ -6,6 +6,7 @@
 	android:padding="@dimen/content_horizontal_padding">
 
 	<TextView
+		android:id="@+id/tv_stub"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
