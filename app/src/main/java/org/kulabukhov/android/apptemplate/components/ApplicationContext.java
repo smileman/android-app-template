@@ -2,6 +2,7 @@ package org.kulabukhov.android.apptemplate.components;
 
 import android.app.Application;
 import com.crashlytics.android.Crashlytics;
+import com.squareup.leakcanary.LeakCanary;
 
 import org.kulabukhov.android.apptemplate.BuildConfig;
 
@@ -22,9 +23,10 @@ public class ApplicationContext extends Application {
 
 		Fabric.with(this, new Crashlytics());
 
-		// configure Timber
+		// configure Timber and LeakCanary
 		if (BuildConfig.DEBUG) {
 			Timber.plant(new Timber.DebugTree());
+			LeakCanary.install(this);
 		}
 
 	}
