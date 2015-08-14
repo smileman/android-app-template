@@ -1,11 +1,11 @@
 package org.kulabukhov.android.apptemplate.components;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 
-import org.jetbrains.annotations.NotNull;
 import org.kulabukhov.android.apptemplate.R;
 import org.kulabukhov.android.apptemplate.fragments.BaseFragment;
 import org.kulabukhov.android.apptemplate.fragments.StubFragment;
@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity {
 
 	}
 
-	private void showContentFragment(@NotNull BaseFragment fragment, boolean addToBackStack, boolean clearBackStack) {
+	private void showContentFragment(@NonNull BaseFragment fragment, boolean addToBackStack, boolean clearBackStack) {
 		if (clearBackStack) {
 			popEntireFragmentBackStack();
 		}
@@ -67,7 +67,7 @@ public class MainActivity extends BaseActivity {
 		updateActionBarTitle();
 	}
 
-	private void showContentFragment(@NotNull BaseFragment fragment) {
+	private void showContentFragment(@NonNull BaseFragment fragment) {
 		showContentFragment(fragment, true, false);
 	}
 

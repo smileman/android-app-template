@@ -1,13 +1,14 @@
 package org.kulabukhov.android.apptemplate.api;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.conn.HttpHostConnectException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.kulabukhov.android.apptemplate.R;
 import org.kulabukhov.android.apptemplate.components.ApplicationContext;
 
@@ -50,7 +51,7 @@ class HttpResponseHandler extends JacksonOkHttpCallback {
 	}
 
 	@Nullable
-	private Exception getExceptionWithDescription(@NotNull Throwable e) {
+	private Exception getExceptionWithDescription(@NonNull Throwable e) {
 		e.printStackTrace();
 
 		String errorDescription = null;

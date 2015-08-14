@@ -1,8 +1,9 @@
 package org.kulabukhov.android.apptemplate.api;
 
+import android.support.annotation.Nullable;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by gkulabukhov on 16/12/14.

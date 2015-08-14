@@ -1,8 +1,9 @@
 package org.kulabukhov.android.apptemplate.api;
 
+import android.support.annotation.NonNull;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -34,15 +35,15 @@ public final class BackgroundResponseProcessor {
 	 */
 	private static final int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
 
-	@NotNull
+	@NonNull
 	private final BlockingQueue<Runnable> processorWorkQueue;
 
-	@NotNull
+	@NonNull
 	private final ThreadPoolExecutor processorThreadPool;
 
 	//private Handler handler;
 
-	@NotNull
+	@NonNull
 	private static BackgroundResponseProcessor instance = new BackgroundResponseProcessor();
 
 	/**
@@ -50,7 +51,7 @@ public final class BackgroundResponseProcessor {
 	 *
 	 * @return The global OperationsProcessor object
 	 */
-	@NotNull
+	@NonNull
 	public static BackgroundResponseProcessor getInstance() {
 
 		return instance;

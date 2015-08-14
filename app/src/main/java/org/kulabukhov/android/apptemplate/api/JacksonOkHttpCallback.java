@@ -1,12 +1,13 @@
 package org.kulabukhov.android.apptemplate.api;
 
+import android.support.annotation.Nullable;
+
 import com.crashlytics.android.Crashlytics;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Response;
 
-import org.jetbrains.annotations.Nullable;
 import org.kulabukhov.android.apptemplate.BuildConfig;
 
 import java.io.IOException;

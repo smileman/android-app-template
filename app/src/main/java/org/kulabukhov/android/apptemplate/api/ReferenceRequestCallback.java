@@ -1,8 +1,8 @@
 package org.kulabukhov.android.apptemplate.api;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import android.support.annotation.Nullable;
 
-import org.jetbrains.annotations.Nullable;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.lang.ref.WeakReference;
 

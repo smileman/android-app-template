@@ -1,5 +1,7 @@
 package org.kulabukhov.android.apptemplate.api;
 
+import android.support.annotation.Nullable;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.HashMap;
@@ -14,7 +16,9 @@ public class ApiRequest<T> {
 	private String method;
 	private HashMap<String, Object> params;
 
+	@Nullable
 	private RequestCallback<T> callback;
+
 	private ResultHandler<T> resultHandler;
 
 
@@ -31,7 +35,7 @@ public class ApiRequest<T> {
 		return params;
 	}
 
-	public void setCallback(RequestCallback<T> callback) {
+	public void setCallback(@Nullable RequestCallback<T> callback) {
 		this.callback = callback;
 	}
 
@@ -39,6 +43,7 @@ public class ApiRequest<T> {
 		this.resultHandler = resultHandler;
 	}
 
+	@Nullable
 	protected RequestCallback<T> getCallback() {
 		return callback;
 	}

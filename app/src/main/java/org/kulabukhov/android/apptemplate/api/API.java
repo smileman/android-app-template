@@ -1,5 +1,8 @@
 package org.kulabukhov.android.apptemplate.api;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,8 +13,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.internal.http.HttpMethod;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.kulabukhov.android.apptemplate.BuildConfig;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public final class API {
 	private static final String METHOD_PATCH = "PATCH";
 	private static final String METHOD_DELETE = "DELETE";
 
-	@NotNull
+	@NonNull
 	private static API instance = new API();
 
 	private final OkHttpClient httpClient;
@@ -61,7 +62,7 @@ public final class API {
 
 	}
 
-	@NotNull
+	@NonNull
 	public static API getInstance() {
 		return instance;
 	}
@@ -81,7 +82,7 @@ public final class API {
 	}
 
 	@Nullable
-	private RequestBody getHttpBody(@NotNull ApiRequest<?> apiRequest) {
+	private RequestBody getHttpBody(@NonNull ApiRequest<?> apiRequest) {
 		if (apiRequest.getParams() == null) {
 			return null;
 		}
@@ -108,8 +109,8 @@ public final class API {
 		return null;
 	}
 
-	@NotNull
-	private HttpUrl getHttpUrl(@NotNull String method, @NotNull ApiRequest<?> apiRequest) {
+	@NonNull
+	private HttpUrl getHttpUrl(@NonNull String method, @NonNull ApiRequest<?> apiRequest) {
 		HttpUrl url = HttpUrl.parse(Configuration.SERVER_API_URL.concat(apiRequest.getMethod()));
 
 		HashMap<String, Object> params = apiRequest.getParams();
@@ -125,9 +126,9 @@ public final class API {
 		return url;
 	}
 
-	private <T> void sendRequest(@NotNull String method, @NotNull ApiRequest<T> apiRequest,
-								 @NotNull ResultHandler<T> resultHandler,
-								 RequestCallback<T> callback) {
+	private <T> void sendRequest(@NonNull String method, @NonNull ApiRequest<T> apiRequest,
+								 @NonNull ResultHandler<T> resultHandler,
+								 @Nullable RequestCallback<T> callback) {
 		apiRequest.setResultHandler(resultHandler);
 		apiRequest.setCallback(callback);
 

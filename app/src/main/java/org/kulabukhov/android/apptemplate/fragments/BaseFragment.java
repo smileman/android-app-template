@@ -1,11 +1,11 @@
 package org.kulabukhov.android.apptemplate.fragments;
 
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
 
-import org.jetbrains.annotations.Nullable;
 import org.kulabukhov.android.commons.helpers.SoftKeyboardHelper;
 
 /**
