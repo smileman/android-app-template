@@ -5,7 +5,6 @@ import android.support.test.runner.AndroidJUnitRunner;
 import android.util.Log;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 

@@ -35,6 +35,7 @@
     <rule ref="rulesets/java/finalizers.xml" />
     <rule ref="rulesets/java/imports.xml">
         <exclude name="TooManyStaticImports" />
+        <exclude name="UnusedImports" />
     </rule>
     <rule ref="rulesets/java/logging-java.xml">
         <exclude name="AvoidPrintStackTrace" />
