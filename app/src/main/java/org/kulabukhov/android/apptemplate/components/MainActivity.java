@@ -1,13 +1,20 @@
 package org.kulabukhov.android.apptemplate.components;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.View;
 
 import org.kulabukhov.android.apptemplate.R;
 import org.kulabukhov.android.apptemplate.fragments.BaseFragment;
+import org.kulabukhov.android.apptemplate.fragments.SideMenuFragment;
 import org.kulabukhov.android.apptemplate.fragments.StubFragment;
 
 /**
@@ -15,7 +22,10 @@ import org.kulabukhov.android.apptemplate.fragments.StubFragment;
  */
 public class MainActivity extends BaseActivity {
 
+	private DrawerLayout drawerLayout;
+	private ActionBarDrawerToggle drawerToggle;
 
+	private SideMenuFragment sideMenuFragment;
 	private BaseFragment currentContentFragment;
 
 	//region ==================== Lifecycle callbacks ====================
@@ -31,6 +41,11 @@ public class MainActivity extends BaseActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		configureNavigationDrawer(toolbar, toolbarBackButtonPressed);
+
+		sideMenuFragment = (SideMenuFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_side_menu);
+
 		if (savedInstanceState == null) {
 			showContentFragment(new StubFragment(), false, true);
 		}
@@ -38,6 +53,59 @@ public class MainActivity extends BaseActivity {
 
 		getSupportFragmentManager().addOnBackStackChangedListener(onBackStackListener);
 
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		drawerToggle.syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		drawerToggle.onConfigurationChanged(newConfig);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (drawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+			drawerLayout.closeDrawer(Gravity.LEFT);
+			return;
+		}
+
+		updateActionBarTitle();
+		super.onBackPressed();
+	}
+
+	//endregion
+
+	//region ==================== UI configuration ====================
+
+	private void configureNavigationDrawer(Toolbar toolbar, View.OnClickListener toolbarNavigationClickListener) {
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+				R.string.drawer_open, R.string.drawer_close) {
+
+			public void onDrawerClosed(View view) {
+				supportInvalidateOptionsMenu();
+			}
+
+			public void onDrawerOpened(View drawerView) {
+				supportInvalidateOptionsMenu();
+			}
+		};
+		drawerToggle.setToolbarNavigationClickListener(toolbarNavigationClickListener);
+		drawerLayout.setDrawerListener(drawerToggle);
+		drawerToggle.syncState();
 	}
 
 	//endregion
@@ -82,6 +150,13 @@ public class MainActivity extends BaseActivity {
 					updateActionBarTitle();
 				}
 			};
+
+	private View.OnClickListener toolbarBackButtonPressed = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			onBackPressed();
+		}
+	};
 
 	//endregion
 
