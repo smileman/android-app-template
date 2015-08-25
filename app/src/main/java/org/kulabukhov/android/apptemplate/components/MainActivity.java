@@ -17,10 +17,12 @@ import org.kulabukhov.android.apptemplate.fragments.BaseFragment;
 import org.kulabukhov.android.apptemplate.fragments.SideMenuFragment;
 import org.kulabukhov.android.apptemplate.fragments.StubFragment;
 
+import timber.log.Timber;
+
 /**
  * Application main activity
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements SideMenuFragment.SideMenuFragmentListener {
 
 	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle drawerToggle;
@@ -157,6 +159,15 @@ public class MainActivity extends BaseActivity {
 			onBackPressed();
 		}
 	};
+
+	//endregion
+
+	//region ==================== SideMenuFragment.SideMenuFragmentListener ====================
+
+	@Override
+	public void onSideMenuItemSelected() {
+		Timber.d("Side menu item clicked");
+	}
 
 	//endregion
 

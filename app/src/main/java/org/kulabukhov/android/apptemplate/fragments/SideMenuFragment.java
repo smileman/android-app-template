@@ -1,5 +1,6 @@
 package org.kulabukhov.android.apptemplate.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,13 @@ public class SideMenuFragment extends BaseFragment {
 
 	private NavigationView navigationView;
 	private View menuHeaderView;
+
+	@Nullable
+	private SideMenuFragmentListener listener;
+
+	public interface SideMenuFragmentListener {
+		void onSideMenuItemSelected();
+	}
 
 	//region ==================== Lifecycle callbacks ====================
 
@@ -45,6 +53,23 @@ public class SideMenuFragment extends BaseFragment {
 
 	}
 
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			listener = (SideMenuFragmentListener) getActivity();
+		} catch (ClassCastException e) {
+			throw new IllegalStateException(
+					activity.getClass().getName() + " must implement " + SideMenuFragmentListener.class.getName());
+		}
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		listener = null;
+	}
+
 	//endregion
 
 	//region ==================== UI handlers ====================
@@ -54,6 +79,9 @@ public class SideMenuFragment extends BaseFragment {
 				@Override
 				public boolean onNavigationItemSelected(MenuItem menuItem) {
 					menuItem.setChecked(true);
+					if (listener != null) {
+						listener.onSideMenuItemSelected();
+					}
 					return true;
 				}
 			};
