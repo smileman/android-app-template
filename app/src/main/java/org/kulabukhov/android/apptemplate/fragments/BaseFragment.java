@@ -6,12 +6,22 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
 
+import com.squareup.leakcanary.RefWatcher;
+
+import org.kulabukhov.android.apptemplate.components.ApplicationContext;
 import org.kulabukhov.android.commons.helpers.SoftKeyboardHelper;
 
 /**
  * Created by gkulabukhov on 25/06/15.
  */
 public class BaseFragment extends Fragment {
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		RefWatcher refWatcher = ApplicationContext.getRefWatcher();
+		refWatcher.watch(this);
+	}
 
 	protected void showToastWithMessage(@Nullable String message) {
 		if (getActivity() != null && message != null && message.length() > 0) {
