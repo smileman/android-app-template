@@ -10,6 +10,6 @@ public class Configuration {
 	/**
 	 * Server API URL
 	 */
-	public static final String SERVER_API_URL = "";
+	public static final String SERVER_API_URL = "http://api.stackexchange.com/2.2/";
 
 }

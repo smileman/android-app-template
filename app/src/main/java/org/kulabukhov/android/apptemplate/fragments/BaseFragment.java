@@ -9,12 +9,30 @@ import android.widget.Toast;
 import com.squareup.leakcanary.RefWatcher;
 
 import org.kulabukhov.android.apptemplate.components.ApplicationContext;
+import org.kulabukhov.android.apptemplate.helpers.RxUtils;
 import org.kulabukhov.android.commons.helpers.SoftKeyboardHelper;
+
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by gkulabukhov on 25/06/15.
  */
 public class BaseFragment extends Fragment {
+
+	protected CompositeSubscription subscriptions = new CompositeSubscription();
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		subscriptions = RxUtils.getNewCompositeSubIfUnsubscribed(subscriptions);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		RxUtils.unsubscribeIfNotNull(subscriptions);
+	}
 
 	@Override
 	public void onDestroy() {

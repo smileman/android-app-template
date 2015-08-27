@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 public abstract class ResultHandler<T> {
 
-	public abstract void handleResult(@Nullable JsonNode jsonResult, JsonNode rawResult,
-									  @Nullable RequestCallback<T> callback);
+	public abstract T handleResult(@Nullable JsonNode jsonResult, JsonNode rawResult);
 
 }

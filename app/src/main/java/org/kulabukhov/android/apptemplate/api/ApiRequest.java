@@ -16,12 +16,6 @@ public class ApiRequest<T> {
 	private String method;
 	private HashMap<String, Object> params;
 
-	@Nullable
-	private RequestCallback<T> callback;
-
-	private ResultHandler<T> resultHandler;
-
-
 	public ApiRequest(String method, HashMap<String, Object> params) {
 		this.method = method;
 		this.params = params;
@@ -33,33 +27,6 @@ public class ApiRequest<T> {
 
 	public HashMap<String, Object> getParams() {
 		return params;
-	}
-
-	public void setCallback(@Nullable RequestCallback<T> callback) {
-		this.callback = callback;
-	}
-
-	public void setResultHandler(ResultHandler<T> resultHandler) {
-		this.resultHandler = resultHandler;
-	}
-
-	@Nullable
-	protected RequestCallback<T> getCallback() {
-		return callback;
-	}
-
-	protected ResultHandler<T> getResultHandler() {
-		return resultHandler;
-	}
-
-	public void handleResult(JsonNode result, JsonNode rawResult) {
-		resultHandler.handleResult(result, rawResult, callback);
-	}
-
-	public void handleError(Exception exception) {
-		if (callback != null) {
-			callback.postResult(null, null, exception);
-		}
 	}
 
 }

@@ -51,6 +51,11 @@ def fixJacocoAndroidTest(String f, String b) {
 	def after1 = "preDex${flavor}${buildType}AndroidTest"
 	def before = "dex${flavor}${buildType}AndroidTest"
 
+	def dexAndroidTestTask = tasks.findByName(before)
+	if (dexAndroidTestTask == null) {
+		return;
+	}
+
 	def agentName = "fixJacocoAgentAndroidTest${flavor}${buildType}"
 	project.task(agentName, type: Copy, dependsOn: [after1]) {
 		group = 'Workaround'
@@ -86,7 +91,6 @@ def fixJacocoAndroidTest(String f, String b) {
 	}
 
 	tasks.getByName(before).dependsOn taskName
-
 }
 
 task pullCoverageResults(type: Exec) {
