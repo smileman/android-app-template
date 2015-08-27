@@ -58,12 +58,12 @@ android {
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
 		debug {
-			testCoverageEnabled = false
+			testCoverageEnabled = true
 		}
 
-		debugCoverage.initWith(buildTypes.debug)
-		debugCoverage {
-			testCoverageEnabled = true
+		debuggable.initWith(buildTypes.debug)
+		debuggable {
+			testCoverageEnabled = false
 		}
 	}
 }
@@ -87,7 +87,7 @@ dependencies {
 	// see https://github.com/JakeWharton/RxBinding
 
 	debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
-	debugCoverageCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+	debuggableCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
 	releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
 
 	// Testing-only dependencies

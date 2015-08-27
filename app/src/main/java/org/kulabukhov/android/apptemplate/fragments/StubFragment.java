@@ -41,21 +41,15 @@ public class StubFragment extends BaseFragment {
 	//region ==================== API request ====================
 
 	private void getQuestions() {
-		final long start = System.currentTimeMillis();
-		Timber.e("loading started = %d", start);
 		subscriptions.add(
 				API.getInstance().getQuestions("").subscribe(new Action1<List<Question>>() {
 			@Override
 			public void call(List<Question> questions) {
-				//Timber.d("questions count = %d", questions == null ? 0 : questions.size());
-				long end = System.currentTimeMillis();
-				Timber.e("loading completed = %d\ntime = %d", end, end - start);
 
 			}
 		}, new Action1<Throwable>() {
 			@Override
 			public void call(Throwable throwable) {
-				Timber.e("error = %s", throwable.getLocalizedMessage());
 			}
 		}));
 	}

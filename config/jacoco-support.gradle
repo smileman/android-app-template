@@ -75,6 +75,12 @@ def fixJacocoAndroidTest(String f, String b) {
 	tasks.getByName(before).dependsOn agentName
 
 	def after = "instrument${flavor}${buildType}"
+
+	def afterTask = tasks.findByName(after)
+	if (afterTask == null) {
+		return;
+	}
+
 	def taskName = "fixJacocoAndroidTest${flavor}${buildType}"
 	project.task(taskName, type: Copy, dependsOn: [after]) {
 		group = 'Workaround'
