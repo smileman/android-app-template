@@ -1,0 +1,27 @@
+
+/*
+Use solution from https://github.com/evant/gradle-retrolambda/issues/61#issuecomment-66581029 to get jdk path.
+System.getenv("JAVA8_HOME") not working for unknown reason
+ */
+
+String java8 = getJavaVersion(8)
+String java7 = getJavaVersion(7)
+
+retrolambda {
+    jdk java8 //have tried with JAVA8_HOME
+    oldJdk java7 //have tried with JAVA6_HOME
+    javaVersion JavaVersion.VERSION_1_7 //have matched the above with VERSION_1_6
+
+/*    println("***************** ---------- *******************")
+    println("JAVA8_HOME: " + java8)
+    println("JAVA7_HOME: " + java7)
+    println("***************** ---------- *******************")*/
+}
+
+String getJavaVersion(Integer v) {
+    def sout = new StringBuffer()
+    def proc = "/usr/libexec/java_home -v 1.$v".execute()
+    proc.consumeProcessOutput(sout, new StringBuffer())
+    proc.waitForOrKill(1000)
+    return sout.toString().replace("\n", "").replace("\r", "")
+}

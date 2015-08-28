@@ -1,6 +1,7 @@
 package org.kulabukhov.android.apptemplate.components;
 
 import android.app.Application;
+
 import com.crashlytics.android.Crashlytics;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;

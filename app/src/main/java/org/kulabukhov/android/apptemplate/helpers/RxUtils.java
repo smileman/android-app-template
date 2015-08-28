@@ -3,6 +3,9 @@ package org.kulabukhov.android.apptemplate.helpers;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
+/**
+ * Helper class for using Rx Java
+ */
 public class RxUtils {
 
     public static void unsubscribeIfNotNull(Subscription subscription) {

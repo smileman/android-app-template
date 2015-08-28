@@ -3,6 +3,7 @@ package org.kulabukhov.android.apptemplate.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,6 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 
 /**
  * Created by gkulabukhov on 27/08/2015.
@@ -51,23 +50,13 @@ public class QuestionsFragment extends BaseFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		//searchQuestions("android");
-
 		Observable<CharSequence> textChangeObservable = RxSearchView.queryTextChanges(searchView);
 		Subscription subscription = textChangeObservable//
-						.filter(new Func1<CharSequence, Boolean>() {
-							@Override
-							public Boolean call(CharSequence charSequence) {
-								return charSequence.length() > 3;
-							}
-						})
+						.filter(charSequence -> charSequence.length() > 3)
 						.debounce(400, TimeUnit.MILLISECONDS)// default Scheduler is Computation
 						.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new Action1<CharSequence>() {
-					@Override
-					public void call(CharSequence charSequence) {
-						getQuestions(charSequence.toString());
-					}
+				.subscribe(charSequence -> {
+					getQuestions(charSequence.toString());
 				});
 		subscriptions.add(subscription);
 
@@ -87,73 +76,17 @@ public class QuestionsFragment extends BaseFragment {
 
 	//region ==================== API request ====================
 
-	/*private void getQuestions(String searchQuery) {
-		subscriptions.add(
-				API.getInstance().searchQuestions(searchQuery)
-						.flatMap(new Func1<List<Question>, Observable<String>>() {
-							@Override
-							public Observable<String> call(List<Question> questions) {
-								StringBuilder sb = new StringBuilder();
-								for (int i = 0; i < questions.size(); i++) {
-									sb.append(questions.get(i).getId());
-									if (i < questions.size() - 1) {
-										sb.append(";");
-									}
-								}
-								//TextUtils.join(";", questions);
-								return Observable.just(sb.toString());
-							}
-						})
-						.flatMap(new Func1<String, Observable<List<Question>>>() {
-							@Override
-							public Observable<List<Question>> call(String ids) {
-								return API.getInstance().getQuestions(ids);
-							}
-						})
-						.subscribe(new Action1<List<Question>>() {
-							@Override
-							public void call(List<Question> questions) {
-								setQuestions(questions);
-							}
-						}, new Action1<Throwable>() {
-							@Override
-							public void call(Throwable throwable) {
-							}
-						}));
-	}*/
-
 	private void getQuestions(String searchQuery) {
 		subscriptions.add(
 				API.getInstance().searchQuestions(searchQuery)
-						.flatMap(new Func1<List<Question>, Observable<String>>() {
-							@Override
-							public Observable<String> call(List<Question> questions) {
-								StringBuilder sb = new StringBuilder();
-								for (int i = 0; i < questions.size(); i++) {
-									sb.append(questions.get(i).getId());
-									if (i < questions.size() - 1) {
-										sb.append(";");
-									}
-								}
-								//TextUtils.join(";", questions);
-								return Observable.just(sb.toString());
-							}
-						})
-						.flatMap(new Func1<String, Observable<List<Question>>>() {
-							@Override
-							public Observable<List<Question>> call(String ids) {
-								return API.getInstance().getQuestions(ids);
-							}
-						})
-						.subscribe(new Action1<List<Question>>() {
-							@Override
-							public void call(List<Question> questions) {
-								setQuestions(questions);
-							}
-						}, new Action1<Throwable>() {
-							@Override
-							public void call(Throwable throwable) {
-							}
+						.flatMap(questions -> Observable.from(questions))
+						.map(question -> question.getId())
+						.toList()
+						.map(ids -> TextUtils.join(";", ids))
+						.flatMap(ids -> API.getInstance().getQuestions(ids))
+						.subscribe(questions -> {
+							setQuestions(questions);
+						}, throwable -> {
 						}));
 	}
 

@@ -7,13 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.kulabukhov.android.apptemplate.R;
-import org.kulabukhov.android.apptemplate.api.API;
-import org.kulabukhov.android.apptemplate.models.Question;
-
-import java.util.List;
-
-import rx.functions.Action1;
-import timber.log.Timber;
 
 /**
  * Created by gkulabukhov on 01/07/15.
