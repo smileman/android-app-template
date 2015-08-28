@@ -193,7 +193,7 @@ public final class API {
 
 	//region ==================== API requests ====================
 
-	public Observable<List<Question>> getQuestions(@NonNull String searchQuery) {
+	public Observable<List<Question>> searchQuestions(@NonNull String searchQuery) {
 		HashMap<String, Object> params = new HashMap<>();
 		params.put("order", "desc");
 		params.put("sort", "activity");
@@ -218,6 +218,36 @@ public final class API {
 							Crashlytics.getInstance().core.logException(e);
 						}
 						return questions;
+					}
+				});
+	}
+
+	public Observable<List<Question>> getQuestions(@NonNull String questionIds) {
+		HashMap<String, Object> params = new HashMap<>();
+		params.put("order", "desc");
+		params.put("sort", "activity");
+		params.put("site", "stackoverflow");
+		params.put("filter", "!9YdnSJ*_S");
+		return sendRequest(METHOD_GET,
+				new ApiRequest<List<Question>>(String.format("questions/%s", questionIds),
+						params), new ResultHandler<List<Question>>() {
+					@Override
+					public List<Question> handleResult(@Nullable JsonNode jsonResult, JsonNode rawResult) {
+						if (jsonResult == null || jsonResult.isNull() || !jsonResult.isObject()) {
+							return null;
+						}
+						ObjectMapper objectMapper = getObjectMapper();
+						List<Question> questions = null;
+						try {
+							questions = objectMapper.readValue(jsonResult.path("items").traverse(),
+									new TypeReference<List<Question>>() {
+									});
+							return questions;
+						} catch (IOException e) {
+							e.printStackTrace();
+							Crashlytics.getInstance().core.logException(e);
+						}
+						return null;
 					}
 				});
 	}

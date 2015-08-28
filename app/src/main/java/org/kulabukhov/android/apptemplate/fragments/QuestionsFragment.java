@@ -13,7 +13,6 @@ import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 
 import org.kulabukhov.android.apptemplate.R;
 import org.kulabukhov.android.apptemplate.api.API;
-import org.kulabukhov.android.apptemplate.fragments.BaseFragment;
 import org.kulabukhov.android.apptemplate.models.Question;
 
 import java.util.List;
@@ -52,7 +51,7 @@ public class QuestionsFragment extends BaseFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		//getQuestions("android");
+		//searchQuestions("android");
 
 		Observable<CharSequence> textChangeObservable = RxSearchView.queryTextChanges(searchView);
 		Subscription subscription = textChangeObservable//
@@ -70,7 +69,7 @@ public class QuestionsFragment extends BaseFragment {
 						getQuestions(charSequence.toString());
 					}
 				});
-
+		subscriptions.add(subscription);
 
 	}
 
@@ -88,18 +87,74 @@ public class QuestionsFragment extends BaseFragment {
 
 	//region ==================== API request ====================
 
+	/*private void getQuestions(String searchQuery) {
+		subscriptions.add(
+				API.getInstance().searchQuestions(searchQuery)
+						.flatMap(new Func1<List<Question>, Observable<String>>() {
+							@Override
+							public Observable<String> call(List<Question> questions) {
+								StringBuilder sb = new StringBuilder();
+								for (int i = 0; i < questions.size(); i++) {
+									sb.append(questions.get(i).getId());
+									if (i < questions.size() - 1) {
+										sb.append(";");
+									}
+								}
+								//TextUtils.join(";", questions);
+								return Observable.just(sb.toString());
+							}
+						})
+						.flatMap(new Func1<String, Observable<List<Question>>>() {
+							@Override
+							public Observable<List<Question>> call(String ids) {
+								return API.getInstance().getQuestions(ids);
+							}
+						})
+						.subscribe(new Action1<List<Question>>() {
+							@Override
+							public void call(List<Question> questions) {
+								setQuestions(questions);
+							}
+						}, new Action1<Throwable>() {
+							@Override
+							public void call(Throwable throwable) {
+							}
+						}));
+	}*/
+
 	private void getQuestions(String searchQuery) {
 		subscriptions.add(
-				API.getInstance().getQuestions(searchQuery).subscribe(new Action1<List<Question>>() {
-					@Override
-					public void call(List<Question> questions) {
-						setQuestions(questions);
-					}
-				}, new Action1<Throwable>() {
-					@Override
-					public void call(Throwable throwable) {
-					}
-				}));
+				API.getInstance().searchQuestions(searchQuery)
+						.flatMap(new Func1<List<Question>, Observable<String>>() {
+							@Override
+							public Observable<String> call(List<Question> questions) {
+								StringBuilder sb = new StringBuilder();
+								for (int i = 0; i < questions.size(); i++) {
+									sb.append(questions.get(i).getId());
+									if (i < questions.size() - 1) {
+										sb.append(";");
+									}
+								}
+								//TextUtils.join(";", questions);
+								return Observable.just(sb.toString());
+							}
+						})
+						.flatMap(new Func1<String, Observable<List<Question>>>() {
+							@Override
+							public Observable<List<Question>> call(String ids) {
+								return API.getInstance().getQuestions(ids);
+							}
+						})
+						.subscribe(new Action1<List<Question>>() {
+							@Override
+							public void call(List<Question> questions) {
+								setQuestions(questions);
+							}
+						}, new Action1<Throwable>() {
+							@Override
+							public void call(Throwable throwable) {
+							}
+						}));
 	}
 
 	//endregion
