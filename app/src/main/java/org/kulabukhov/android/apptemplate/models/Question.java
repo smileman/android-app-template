@@ -15,4 +15,9 @@ public class Question {
 
 	//endregion
 
+
+	@Override
+	public String toString() {
+		return title;
+	}
 }

@@ -32,26 +32,6 @@ public class StubFragment extends BaseFragment {
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
-		getQuestions();
-	}
-
-	//endregion
-
-	//region ==================== API request ====================
-
-	private void getQuestions() {
-		subscriptions.add(
-				API.getInstance().getQuestions("").subscribe(new Action1<List<Question>>() {
-			@Override
-			public void call(List<Question> questions) {
-
-			}
-		}, new Action1<Throwable>() {
-			@Override
-			public void call(Throwable throwable) {
-			}
-		}));
 	}
 
 	//endregion

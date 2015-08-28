@@ -193,10 +193,15 @@ public final class API {
 
 	//region ==================== API requests ====================
 
-	public Observable<List<Question>> getQuestions(String searchQuery) {
+	public Observable<List<Question>> getQuestions(@NonNull String searchQuery) {
+		HashMap<String, Object> params = new HashMap<>();
+		params.put("order", "desc");
+		params.put("sort", "activity");
+		params.put("intitle", searchQuery);
+		params.put("site", "stackoverflow");
 		return sendRequest(METHOD_GET,
-				new ApiRequest<List<Question>>("search?order=desc&sort=activity&intitle=android&site=stackoverflow",
-						null), new ResultHandler<List<Question>>() {
+				new ApiRequest<List<Question>>("search",
+						params), new ResultHandler<List<Question>>() {
 					@Override
 					public List<Question> handleResult(@Nullable JsonNode jsonResult, JsonNode rawResult) {
 						if (jsonResult == null || jsonResult.isNull() || !jsonResult.isObject()) {
