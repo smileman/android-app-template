@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import org.kulabukhov.android.apptemplate.R;
 import org.kulabukhov.android.apptemplate.fragments.BaseFragment;
 import org.kulabukhov.android.apptemplate.fragments.QuestionsFragment;
+import org.kulabukhov.android.apptemplate.fragments.StubFragment;
 
 /**
  * Application main activity
@@ -32,7 +33,7 @@ public class MainActivity extends BaseActivity {
 		getSupportActionBar().setHomeButtonEnabled(true);
 
 		if (savedInstanceState == null) {
-			showContentFragment(new QuestionsFragment(), false, true);
+			showContentFragment(new StubFragment(), false, true);
 		}
 		updateActionBarTitle();
 
