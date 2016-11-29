@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
 
-import com.squareup.leakcanary.RefWatcher;
-
 import org.kulabukhov.android.apptemplate.components.ApplicationContext;
 import org.kulabukhov.android.apptemplate.helpers.RxUtils;
 import org.kulabukhov.android.commons.helpers.SoftKeyboardHelper;
@@ -32,13 +30,6 @@ public class BaseFragment extends Fragment {
 		super.onPause();
 
 		RxUtils.unsubscribeIfNotNull(subscriptions);
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		RefWatcher refWatcher = ApplicationContext.getRefWatcher();
-		refWatcher.watch(this);
 	}
 
 	protected void showToastWithMessage(@Nullable String message) {

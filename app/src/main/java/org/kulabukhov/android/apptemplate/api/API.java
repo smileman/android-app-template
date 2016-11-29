@@ -9,13 +9,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.internal.http.HttpMethod;
 
 import org.kulabukhov.android.apptemplate.BuildConfig;
 import org.kulabukhov.android.apptemplate.models.Question;
@@ -28,6 +21,13 @@ import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.internal.http.HttpMethod;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -55,18 +55,19 @@ public final class API {
 
 	private API() {
 
-		httpClient = new OkHttpClient();
-		httpClient.setConnectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS);
-		if (BuildConfig.DEBUG) {
-			httpClient.interceptors().add(new LoggingInterceptor());
-		}
+		httpClient = new OkHttpClient.Builder()
+				.connectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
+				//.readTimeout(READ_WRITE_TIMEOUT, TimeUnit.SECONDS)
+				//.writeTimeout(READ_WRITE_TIMEOUT, TimeUnit.SECONDS)
+				.addInterceptor(new LoggingInterceptor())
+				.build();
 
 		//region ==================== SSL ====================
 
 		try {
-			SSLSocketFactory sf = new UnsecureSSLSocketFactory();
-			httpClient.setSslSocketFactory(sf);
-			httpClient.setHostnameVerifier(null);
+			//SSLSocketFactory sf = new UnsecureSSLSocketFactory();
+			//httpClient.setSslSocketFactory(sf);
+			//httpClient.setHostnameVerifier(null);
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
