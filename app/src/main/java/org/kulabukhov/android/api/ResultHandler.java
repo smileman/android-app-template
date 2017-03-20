@@ -1,4 +1,4 @@
-package org.kulabukhov.android.apptemplate.api;
+package org.kulabukhov.android.api;
 
 import android.support.annotation.Nullable;
 

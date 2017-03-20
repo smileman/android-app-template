@@ -1,4 +1,4 @@
-package org.kulabukhov.android.apptemplate.fragments;
+package org.kulabukhov.android.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,8 +13,8 @@ import android.widget.ListView;
 import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 
 import org.kulabukhov.android.apptemplate.R;
-import org.kulabukhov.android.apptemplate.api.API;
-import org.kulabukhov.android.apptemplate.models.Question;
+import org.kulabukhov.android.api.API;
+import org.kulabukhov.android.models.Question;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

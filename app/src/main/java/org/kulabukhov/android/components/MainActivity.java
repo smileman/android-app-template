@@ -1,4 +1,4 @@
-package org.kulabukhov.android.apptemplate.components;
+package org.kulabukhov.android.components;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,9 +7,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 
 import org.kulabukhov.android.apptemplate.R;
-import org.kulabukhov.android.apptemplate.fragments.BaseFragment;
-import org.kulabukhov.android.apptemplate.fragments.QuestionsFragment;
-import org.kulabukhov.android.apptemplate.fragments.StubFragment;
+import org.kulabukhov.android.fragments.BaseFragment;
+import org.kulabukhov.android.fragments.QuestionsFragment;
+import org.kulabukhov.android.fragments.StubFragment;
 
 /**
  * Application main activity

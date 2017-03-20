@@ -1,4 +1,4 @@
-package org.kulabukhov.android.apptemplate.helpers;
+package org.kulabukhov.android.helpers;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;

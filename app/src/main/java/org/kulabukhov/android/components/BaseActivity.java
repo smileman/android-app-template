@@ -1,4 +1,4 @@
-package org.kulabukhov.android.apptemplate.components;
+package org.kulabukhov.android.components;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;

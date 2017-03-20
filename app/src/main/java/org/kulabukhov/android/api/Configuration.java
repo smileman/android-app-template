@@ -1,4 +1,4 @@
-package org.kulabukhov.android.apptemplate.api;
+package org.kulabukhov.android.api;
 
 /**
  * Created by gkulabukhov on 26/06/15.

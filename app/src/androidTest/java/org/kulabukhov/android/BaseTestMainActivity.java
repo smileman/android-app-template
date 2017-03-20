@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kulabukhov.android.apptemplate;
+package org.kulabukhov.android;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -25,7 +25,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
-import org.kulabukhov.android.apptemplate.components.MainActivity;
+import org.kulabukhov.android.components.MainActivity;
 
 /**
  * Test class which describe functional tests for the main activity.

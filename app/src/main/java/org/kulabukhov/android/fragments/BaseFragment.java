@@ -1,4 +1,4 @@
-package org.kulabukhov.android.apptemplate.fragments;
+package org.kulabukhov.android.fragments;
 
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
 
-import org.kulabukhov.android.apptemplate.components.ApplicationContext;
-import org.kulabukhov.android.apptemplate.helpers.RxUtils;
+import org.kulabukhov.android.components.ApplicationContext;
+import org.kulabukhov.android.helpers.RxUtils;
 import org.kulabukhov.android.commons.helpers.SoftKeyboardHelper;
 
 import rx.subscriptions.CompositeSubscription;

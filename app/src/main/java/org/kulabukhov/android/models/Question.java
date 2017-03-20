@@ -1,4 +1,4 @@
-package org.kulabukhov.android.apptemplate.models;
+package org.kulabukhov.android.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

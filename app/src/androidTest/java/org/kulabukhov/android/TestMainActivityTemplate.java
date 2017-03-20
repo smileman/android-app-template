@@ -1,6 +1,9 @@
-package org.kulabukhov.android.apptemplate;
+package org.kulabukhov.android;
+
+import android.support.test.espresso.matcher.ViewMatchers;
 
 import org.junit.Test;
+import org.kulabukhov.android.apptemplate.R;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -19,7 +22,7 @@ public class TestMainActivityTemplate extends BaseTestMainActivity {
 
 	@Test
 	public void testStubFragmentShown() {
-		onView(withId(R.id.tv_stub))
+		onView(ViewMatchers.withId(R.id.tv_stub))
 				.check(matches(isDisplayed()));
 	}
 

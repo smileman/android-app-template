@@ -1,4 +1,4 @@
-package org.kulabukhov.android.apptemplate.components;
+package org.kulabukhov.android.components;
 
 import android.app.Application;
 

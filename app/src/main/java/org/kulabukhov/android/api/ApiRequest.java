@@ -1,4 +1,4 @@
-package org.kulabukhov.android.apptemplate.api;
+package org.kulabukhov.android.api;
 
 import java.util.HashMap;
 

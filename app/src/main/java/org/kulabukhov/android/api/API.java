@@ -1,4 +1,4 @@
-package org.kulabukhov.android.apptemplate.api;
+package org.kulabukhov.android.api;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,15 +11,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.kulabukhov.android.apptemplate.BuildConfig;
-import org.kulabukhov.android.apptemplate.models.Question;
+import org.kulabukhov.android.models.Question;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.SSLSocketFactory;
 
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
