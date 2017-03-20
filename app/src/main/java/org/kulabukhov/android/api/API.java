@@ -5,18 +5,15 @@ import android.support.annotation.Nullable;
 
 import com.crashlytics.android.Crashlytics;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.kulabukhov.android.apptemplate.BuildConfig;
-import org.kulabukhov.android.models.Question;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.HttpUrl;
@@ -184,70 +181,6 @@ public final class API {
 				}
 			}
 		}).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-	}
-
-	//endregion
-
-
-	//region ==================== API requests ====================
-
-	public Observable<List<Question>> searchQuestions(@NonNull String searchQuery) {
-		HashMap<String, Object> params = new HashMap<>();
-		params.put("order", "desc");
-		params.put("sort", "activity");
-		params.put("intitle", searchQuery);
-		params.put("site", "stackoverflow");
-		return sendRequest(METHOD_GET,
-				new ApiRequest<List<Question>>("search",
-						params), new ResultHandler<List<Question>>() {
-					@Override
-					public List<Question> handleResult(@Nullable JsonNode jsonResult, JsonNode rawResult) {
-						if (jsonResult == null || jsonResult.isNull() || !jsonResult.isObject()) {
-							return null;
-						}
-						ObjectMapper objectMapper = getObjectMapper();
-						List<Question> questions = null;
-						try {
-							questions = objectMapper.readValue(jsonResult.path("items").traverse(),
-									new TypeReference<List<Question>>() {
-									});
-						} catch (IOException e) {
-							e.printStackTrace();
-							Crashlytics.getInstance().core.logException(e);
-						}
-						return questions;
-					}
-				});
-	}
-
-	public Observable<List<Question>> getQuestions(@NonNull String questionIds) {
-		HashMap<String, Object> params = new HashMap<>();
-		params.put("order", "desc");
-		params.put("sort", "activity");
-		params.put("site", "stackoverflow");
-		params.put("filter", "!9YdnSJ*_S");
-		return sendRequest(METHOD_GET,
-				new ApiRequest<List<Question>>(String.format("questions/%s", questionIds),
-						params), new ResultHandler<List<Question>>() {
-					@Override
-					public List<Question> handleResult(@Nullable JsonNode jsonResult, JsonNode rawResult) {
-						if (jsonResult == null || jsonResult.isNull() || !jsonResult.isObject()) {
-							return null;
-						}
-						ObjectMapper objectMapper = getObjectMapper();
-						List<Question> questions = null;
-						try {
-							questions = objectMapper.readValue(jsonResult.path("items").traverse(),
-									new TypeReference<List<Question>>() {
-									});
-							return questions;
-						} catch (IOException e) {
-							e.printStackTrace();
-							Crashlytics.getInstance().core.logException(e);
-						}
-						return null;
-					}
-				});
 	}
 
 	//endregion
