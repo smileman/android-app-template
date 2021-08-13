@@ -1,0 +1,372 @@
+openapi: 3.0.0
+info:
+  title: ProChef API
+  version: 1.0.0
+  description: ProChef API
+
+paths:
+  /v1/auth/authorize:
+    post:
+      tags:
+        - Authorization
+      description: "Метод авторизации/регистрации. Используется и для авторизации имеющихся пользователей, и для регистрации новых. Сервер высылает код подтверждения в виде SMS на указанный номер и возвращает id сессии, соответствующей данной операции"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthPhoneRequestBody'
+      responses:
+        200:
+          description: Authorization success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionIdResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /v1/auth/verifyCode:
+    post:
+      tags:
+        - Authorization
+      description: "Метод подтверждения кода, высланного в SMS. Использует id сессии, полученный на POST auth/authorize. Если пользователь уже зарегистрарован - в ответе возвращается его авторизационный токен. Если пользователь еще не зарегистрирован - то создается новый пользователь и также возвращается его авторизационный токен."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthVerifyCodeBody'
+      responses:
+        200:
+          description: Code is correct
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSuccessResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        401:
+          description: Code is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /v1/auth/resendCode:
+    post:
+      tags:
+        - Authorization
+      description: "Метод для повторной отправки кода. Использует id сессии, высланной в POST auth/authorize. В ответ ожидается обновлённый id сессии (может совпадать со старым в зависимости от реализации на сервере)."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthResendCodeBody'
+      responses:
+        200:
+          description: Operation success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionIdResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /v1/auth/refreshToken:
+    post:
+      tags:
+      - Authorization
+      description: "Метод обновления авторизационного токена"
+      parameters:
+      - in: header
+        name: Refresh-Token
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful refresh
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSuccessResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        401:
+          description: Token is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /v1/regions:
+    get:
+      tags:
+      - Region
+      description: "Возвращает список всех доступных регионов"
+      responses:
+        200:
+          description: Operation success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Region'
+                  
+  /v1/promotions:
+    get:
+      tags:
+      - Home
+      description: "Возвращает список акций"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Promotion'
+                  
+  /v1/categories:
+    get:
+      tags:
+      - Home
+      description: "Возвращает дерево категорий"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GoodsCategory'
+                  
+  /v1/goods/recommended:
+    get:
+      tags:
+      - Home
+      description: "Возвращает limit рекомендованных товаров, начиная с offset."
+      parameters:
+      - name: limit
+        in: query
+        required: true
+        schema:
+          type: integer
+          example: 20
+      - name: offset
+        in: query
+        required: true
+        schema:
+          type: integer
+          example: 0
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Goods'
+components:
+  schemas:               
+    ErrorResponse:
+      type: object
+      required:
+        - errorMessage
+      properties:
+        errorMessage:
+          type: string
+          example: "<Локализованное описание ошибки для пользователя>"
+    AuthPhoneRequestBody:
+      type: object
+      required:
+      - countryCode
+      - phone
+      properties:
+        countryCode:
+          type: string
+          example: "+7"
+        phone:
+          type: string
+          example: "9054302112"
+    AuthVerifyCodeBody:
+      type: object
+      required:
+      - sessionId
+      - smsCode
+      properties:
+        sessionId:
+          type: string
+        smsCode:
+          type: string
+          example: "2901"
+    AuthResendCodeBody:
+      type: object
+      required:
+      - sessionId
+      properties:
+        sessionId:
+          type: string
+    AuthSuccessResponse:
+      type: object
+      required:
+      - authorizationToken
+      - refreshToken
+      properties:
+        authorizationToken:
+          type: string
+        refreshToken:
+          type: string
+    SessionIdResponse:
+      type: object
+      required:
+      - sessionId
+      properties:
+        sessionId:
+          type: string
+    Region:
+      type: object
+      required:
+      - id
+      - name
+      - isPopular
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          example: "Москва"
+        isPopular:
+          type: boolean
+    Promotion:
+      type: object
+      required:
+      - id
+      - title
+      - description
+      - photoUrl
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          example: "Сезон закупок"
+        description:
+          type: string
+          example: "Скидка 5% на первый заказ"
+        photoUrl:
+          type: string
+          example: "<ссылка на фото>"
+    GoodsCategory:
+      type: object
+      required:
+      - id
+      - title
+      - photoUrl
+      - childCategories
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          example: "Рыба"
+        photoUrl:
+          type: string
+          example: "<ссылка на фото>"
+        childCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoodsCategory'
+          example:
+            [{
+              id: "string",
+              title: "Лосось",
+              photoUrl: "<ссылка на фото>",
+              childCategories: []
+            }]
+    Goods:
+      type: object
+      required:
+      - id
+      - title
+      - description
+      - price
+      - priceUnit
+      - previewPhotoUrl
+      - photoUrls
+      - supplier
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          example: "Тунец охлажденный филе, Индонезия"
+        description:
+          type: string
+          example: "Тунец — не совсем обычная рыба, к ней подают красное, а не белое, как традиционно принято, вино. Дело в том, что мясо тунца напоминает говядину (очень вкусное, но слегка суховатое). Мясо тунца является лидером среди рыб по содержанию белка."
+        price:
+          type: integer
+          description: "Цена в копейках"
+          example: 120900
+        priceUnit:
+          type: string
+          example: "кг"
+        previewPhotoUrl:
+          type: string
+          example: "<ссылка на фото для отображения в списках>"
+        photoUrls:
+          type: array
+          items:
+            type: string
+            example: "<ссылка на фото для карточки товара>"
+        supplier:
+          $ref: '#/components/schemas/Supplier'
+    Supplier:
+      type: object
+      required:
+      - id
+      - title
+      - logoUrl
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          example: "Agama"
+        logoUrl:
+          type: string
+          example: "<ссылка на лого>"
+        phone:
+          type: string
+          example: "+79876543210"
+        viber:
+          type: string
+          example: "+7123456789"
+        telegram:
+          type: string
+          example: "+7654321098"
+        whatsApp:
+          type: string
+          example: "+7890123456"
